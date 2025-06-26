@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const submitBtn = e.target.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
-        
+
         const newAppointment = {
             slotId: activeSlotId,
             clientName: document.getElementById('client-name').value,
@@ -151,23 +151,25 @@ document.addEventListener('DOMContentLoaded', () => {
             status: 'booked',
             createdAt: new Date()
         };
+
+        const [dateStr, time] = activeSlotId.split('T');
+        const formattedDate = parseDateString(dateStr).toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+
+        const message = `*Novo Agendamento Recebido!*\n\n*Cliente:* ${newAppointment.clientName}\n*Telefone:* ${newAppointment.clientPhone}\n*Carro:* ${newAppointment.carModel}\n*Serviço:* ${newAppointment.serviceType}\n*Data:* ${formattedDate}\n*Hora:* ${time}`;
+        const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
         
+        window.open(whatsappUrl, '_blank');
+        
+        alert('Redirecionando para o WhatsApp... Após enviar a mensagem, seu agendamento será confirmado.');
+
         try {
             await addDoc(collection(db, "agendamentos"), newAppointment);
-            
-            const [dateStr, time] = activeSlotId.split('T');
-            const formattedDate = parseDateString(dateStr).toLocaleDateString('pt-BR', {timeZone: 'UTC'});
-
-            const message = `*Novo Agendamento Recebido!*\n\n*Cliente:* ${newAppointment.clientName}\n*Telefone:* ${newAppointment.clientPhone}\n*Carro:* ${newAppointment.carModel}\n*Serviço:* ${newAppointment.serviceType}\n*Data:* ${formattedDate}\n*Hora:* ${time}`;
-            const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-            
-            alert('Agendamento realizado! Você será redirecionado para o WhatsApp para enviar a notificação.');
-            closeModal();
+            console.log("Agendamento salvo com sucesso no Firebase.");
         } catch (error) {
             console.error("Erro ao adicionar agendamento: ", error);
-            alert("Ocorreu um erro ao agendar. Tente novamente.");
+            alert("Ocorreu um erro ao salvar seu agendamento, mas a notificação foi enviada. Por favor, aguarde a confirmação manual.");
         } finally {
+            closeModal();
             submitBtn.disabled = false;
         }
     });
@@ -176,5 +178,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayStr = getTodayString();
     datePicker.value = todayStr;
     datePicker.min = todayStr;
-    listenToAppointments(); // Começa a ouvir as atualizações do Firebase
+    listenToAppointments();
 });
