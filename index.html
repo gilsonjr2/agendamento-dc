@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Estética Automotiva - Agendamento</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-car-on"></i> DC ESTÉTICA AUTOMOTIVA</h1>
+            <p>Agende seu horário de forma rápida e fácil!</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="schedule-container">
+            <h2>Selecione uma data e horário</h2>
+            
+            <div class="date-selector">
+                <button id="prev-day-btn"><i class="fas fa-chevron-left"></i> Dia Anterior</button>
+                <input type="date" id="date-picker">
+                <button id="next-day-btn">Próximo Dia <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <p id="day-of-week" class="day-of-week-display"></p>
+
+            <div id="time-slots-grid" class="time-slots">
+                <div class="loader-container"><div class="loader"></div></div>
+            </div>
+             <div class="legend">
+                <span><span class="legend-color available"></span> Disponível</span>
+                <span><span class="legend-color booked"></span> Reservado</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Agendamento -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Confirmar Agendamento</h3>
+            <p>Você selecionou o horário: <strong id="selected-slot-text"></strong></p>
+            <form id="booking-form">
+                <div class="form-group">
+                    <label for="client-name">Seu Nome:</label>
+                    <input type="text" id="client-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-phone">Seu Telefone (WhatsApp):</label>
+                    <input type="tel" id="client-phone" placeholder="(99) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label for="car-model">Modelo do Carro:</label>
+                    <input type="text" id="car-model" placeholder="Ex: Honda Civic" required>
+                </div>
+                <div class="form-group">
+                    <label for="service-type">Tipo de Serviço:</label>
+                    <select id="service-type" required>
+                        <option value="Lavagem Simples">Lavagem Simples (Exterior)</option>
+                        <option value="Lavagem Completa">Lavagem Completa (Exterior + Interior)</option>
+                        <option value="Polimento">Polimento e Cristalização</option>
+                        <option value="Higienização Interna">Higienização Interna</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fab fa-whatsapp"></i> Agendar e Notificar</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>DC ESTÉTICA AUTOMOTIVA &copy; 2024</p>
+        <div class="social-links">
+            <a href="https://wa.me/5524998147901" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/seu_usuario_aqui" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Exemplo,+123,+Sua+Cidade" target="_blank" title="Localização"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAe0kkr5PHvu2GOQWcCew_glC_Tf6lwRfE",
+            authDomain: "dc-estetica-automotiva.firebaseapp.com",
+            projectId: "dc-estetica-automotiva",
+            storageBucket: "dc-estetica-automotiva.appspot.com",
+            messagingSenderId: "433904367619",
+            appId: "1:433904367619:web:4b5a668717fb6893143636"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.firebase = { db, collection, addDoc, onSnapshot, query, where };
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>

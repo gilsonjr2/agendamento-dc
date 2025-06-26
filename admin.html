@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - DC Estética Automotiva</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-user-shield"></i> Painel do Proprietário</h1>
+            <p>Gerencie os agendamentos da DC Estética Automotiva.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-container">
+            <h2>Próximos Agendamentos</h2>
+            <div class="filters">
+                <label for="status-filter">Filtrar por status:</label>
+                <select id="status-filter">
+                    <option value="all">Todos</option>
+                    <option value="booked">Agendados</option>
+                    <option value="concluded">Concluídos</option>
+                </select>
+            </div>
+            <div id="appointments-list">
+                 <div class="loader-container"><div class="loader"></div></div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>DC ESTÉTICA AUTOMOTIVA &copy; 2024 - <a href="index.html">Voltar para Agendamento</a></p>
+         <div class="social-links">
+            <a href="https://wa.me/5524998147901" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/seu_usuario_aqui" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Exemplo,+123,+Sua+Cidade" target="_blank" title="Localização"><i class="fas fa-map-marker-alt"></i></a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAe0kkr5PHvu2GOQWcCew_glC_Tf6lwRfE",
+            authDomain: "dc-estetica-automotiva.firebaseapp.com",
+            projectId: "dc-estetica-automotiva",
+            storageBucket: "dc-estetica-automotiva.appspot.com",
+            messagingSenderId: "433904367619",
+            appId: "1:433904367619:web:4b5a668717fb6893143636"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.firebase = { db, collection, onSnapshot, doc, updateDoc, deleteDoc, query };
+    </script>
+
+    <script src="admin.js"></script>
+</body>
+</html>
